@@ -19,16 +19,17 @@ class signUpVC: UIViewController {
     @IBOutlet weak var passwordTextField: UITextField!
     @IBOutlet weak var repeatPasswordTextField: UITextField!
     @IBOutlet weak var signinButton: UIButton!
+    @IBOutlet weak var errorLabel: UILabel!
     
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        errorLabel.alpha = 0
 
         
     }
     @IBAction func signinButton(_ sender: Any) {
-        
-        //Validate fields
         
         //Clean fiels results
         let name = nameTextField.text!.trimmingCharacters(in: .whitespacesAndNewlines)
@@ -36,29 +37,55 @@ class signUpVC: UIViewController {
         let email = emailTextField.text!.trimmingCharacters(in: .whitespacesAndNewlines)
         let birthday = birthdayTextField.text!.trimmingCharacters(in: .whitespacesAndNewlines)
         let pass  = passwordTextField.text!.trimmingCharacters(in: .whitespacesAndNewlines)
+        let repeatPass = repeatPasswordTextField.text!.trimmingCharacters(in: .whitespacesAndNewlines)
         
-        //Create User
-        Auth.auth().createUser(withEmail: email, password: pass) { (result, AUTHerror) in
-            if AUTHerror != nil {
-                //Show error while create user
+        //Check if all fields are filled in
+        if name == "" || lastname == "" || email == "" || birthday == "" || pass == "" || repeatPass == "" {
+            
+            //Show error, all the files must be filled in
+            errorLabel.alpha = 1
+            errorLabel.text = "Please, fill in all the fields"
+            return
+            
+        }else {
+            if pass != repeatPass {
+                
+                //Show error, password doesnt match
+                errorLabel.alpha = 1
+                errorLabel.text = "Please, check that password matches"
+                return
+                
             }
             else {
-                //Save user's data
-                let db = Firestore.firestore()
-                db.collection("Users").addDocument(data: ["uid" : result!.user.uid, "Name" : name, "Lastname" : lastname, "Email" : email, "Birthday" : birthday]) { (DBerror) in
-                    if DBerror != nil {
+                //Create User
+                Auth.auth().createUser(withEmail: email, password: pass) { (result, AUTHerror) in
+                    if AUTHerror != nil {
                         //Show error while create user
+                        self.errorLabel.alpha = 1
+                        self.errorLabel.text = "User can't be created"
+                        return
                         
                     }
                     else {
-                        //Transition to Home
-                        self.performSegue(withIdentifier: "toHomeFromSignUp", sender: self)
+                        //Save user's data
+                        let db = Firestore.firestore()
+                        db.collection("Users").addDocument(data: ["uid" : result!.user.uid, "Name" : name, "Lastname" : lastname, "Email" : email, "Birthday" : birthday]) { (DBerror) in
+                            if DBerror != nil {
+                                //Show error while create user
+                                self.errorLabel.alpha = 1
+                                self.errorLabel.text = "Warning: user info wasn't save propertly in the database"
+                                return
+                                
+                            }
+                            else {
+                                //Transition to Home
+                                self.performSegue(withIdentifier: "toHomeFromSignUp", sender: self)
+                            }
+                        }
                     }
                 }
             }
         }
         
     }
-    
-
 }

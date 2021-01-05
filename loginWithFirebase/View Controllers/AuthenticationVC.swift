@@ -14,10 +14,13 @@ class AuthenticationVC: UIViewController {
     @IBOutlet weak var passwordTextField: UITextField!
     @IBOutlet weak var loginButton: UIButton!
     @IBOutlet weak var signupButton: UIButton!
+    @IBOutlet weak var errorLabel: UILabel!
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        errorLabel.alpha = 0
         
     }
     
