@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import Firebase
+import FirebaseAuth
 
 class signUpVC: UIViewController {
     
@@ -26,13 +28,37 @@ class signUpVC: UIViewController {
     }
     @IBAction func signinButton(_ sender: Any) {
         
-        performSegue(withIdentifier: "toHomeFromSignUp", sender: self)
+        //Validate fields
+        
+        //Clean fiels results
+        let name = nameTextField.text!.trimmingCharacters(in: .whitespacesAndNewlines)
+        let lastname = lastnameTextField.text!.trimmingCharacters(in: .whitespacesAndNewlines)
+        let email = emailTextField.text!.trimmingCharacters(in: .whitespacesAndNewlines)
+        let birthday = birthdayTextField.text!.trimmingCharacters(in: .whitespacesAndNewlines)
+        let pass  = passwordTextField.text!.trimmingCharacters(in: .whitespacesAndNewlines)
+        
+        //Create User
+        Auth.auth().createUser(withEmail: email, password: pass) { (result, AUTHerror) in
+            if AUTHerror != nil {
+                //Show error while create user
+            }
+            else {
+                //Save user's data
+                let db = Firestore.firestore()
+                db.collection("Users").addDocument(data: ["uid" : result!.user.uid, "Name" : name, "Lastname" : lastname, "Email" : email, "Birthday" : birthday]) { (DBerror) in
+                    if DBerror != nil {
+                        //Show error while create user
+                        
+                    }
+                    else {
+                        //Transition to Home
+                        self.performSegue(withIdentifier: "toHomeFromSignUp", sender: self)
+                    }
+                }
+            }
+        }
         
     }
     
-
-    
-    // MARK: - Navigation
-
 
 }
