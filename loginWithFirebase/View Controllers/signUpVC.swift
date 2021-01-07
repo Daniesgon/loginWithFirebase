@@ -57,16 +57,19 @@ class signUpVC: UIViewController {
                 
             }
             else {
+                
                 //Create User
                 Auth.auth().createUser(withEmail: email, password: pass) { (result, AUTHerror) in
                     if AUTHerror != nil {
                         //Show error while create user
                         self.errorLabel.alpha = 1
-                        self.errorLabel.text = "User can't be created"
+                        let errorDescription = AUTHerror?.localizedDescription
+                        self.errorLabel.text = "\(errorDescription!)"
                         return
                         
                     }
                     else {
+                        
                         //Save user's data
                         let db = Firestore.firestore()
                         db.collection("Users").addDocument(data: ["uid" : result!.user.uid, "Name" : name, "Lastname" : lastname, "Email" : email, "Birthday" : birthday]) { (DBerror) in
@@ -78,8 +81,10 @@ class signUpVC: UIViewController {
                                 
                             }
                             else {
+                                
                                 //Transition to Home
                                 self.performSegue(withIdentifier: "toHomeFromSignUp", sender: self)
+                                
                             }
                         }
                     }
