@@ -47,59 +47,62 @@ class signUpVC: UIViewController {
             errorLabel.text = "Please, fill in all the fields"
             return
             
-        }else {
-            if pass != repeatPass {
-                
-                //Show error, password doesn't match
-                errorLabel.alpha = 1
-                errorLabel.text = "Please, check that password matches"
-                return
-                
-            }
-            else {
-                
-                if !Utilities.passwordValidator(pass){
-                    
-                    //Show error, password doesn't match
-                    errorLabel.alpha = 1
-                    errorLabel.text = "Password must have at least 8 characters, one capital letter and one number"
+        }else if pass != repeatPass {
+            
+            //Show error, password doesn't match
+            errorLabel.alpha = 1
+            errorLabel.text = "Please, check that password matches"
+            return
+            
+        }else if !Utilities.passwordValidator(pass) {
+            
+            //Show error, password doesn't match
+            errorLabel.alpha = 1
+            errorLabel.text = "Password must have at least 8 characters, one capital letter and one number"
+            return
+            
+        }/*else if !Utilities.isValidEmail(email) {
+            
+            //Show error, password doesn't match
+            errorLabel.alpha = 1
+            errorLabel.text = "This is not an email, please enter a valid email"
+            return
+            
+        }*/else {
+            
+            //Create User
+            Auth.auth().createUser(withEmail: email, password: pass) { (result, AUTHerror) in
+                if AUTHerror != nil {
+                    //Show error while create user
+                    self.errorLabel.alpha = 1
+                    let errorDescription = AUTHerror?.localizedDescription
+                    self.errorLabel.text = "\(errorDescription!)"
                     return
                     
                 }
                 else {
-                    //Create User
-                    Auth.auth().createUser(withEmail: email, password: pass) { (result, AUTHerror) in
-                        if AUTHerror != nil {
+                    
+                    //Save user's data
+                    let db = Firestore.firestore()
+                    db.collection("Users").addDocument(data: ["uid" : result!.user.uid, "Name" : name, "Lastname" : lastname, "Email" : email, "Birthday" : birthday]) { (DBerror) in
+                        if DBerror != nil {
                             //Show error while create user
                             self.errorLabel.alpha = 1
-                            let errorDescription = AUTHerror?.localizedDescription
-                            self.errorLabel.text = "\(errorDescription!)"
+                            self.errorLabel.text = "Warning: user's info wasn't save propertly in the database"
                             return
                             
                         }
                         else {
                             
-                            //Save user's data
-                            let db = Firestore.firestore()
-                            db.collection("Users").addDocument(data: ["uid" : result!.user.uid, "Name" : name, "Lastname" : lastname, "Email" : email, "Birthday" : birthday]) { (DBerror) in
-                                if DBerror != nil {
-                                    //Show error while create user
-                                    self.errorLabel.alpha = 1
-                                    self.errorLabel.text = "Warning: user's info wasn't save propertly in the database"
-                                    return
-                                    
-                                }
-                                else {
-                                    
-                                    //Transition to Home
-                                    self.performSegue(withIdentifier: "toHomeFromSignUp", sender: self)
-                                    
-                                }
-                            }
+                            //Transition to Home
+                            self.performSegue(withIdentifier: "toHomeFromSignUp", sender: self)
+                            
                         }
                     }
                 }
             }
         }
-    }
-}
+        
+    } //End of the action signUpButton
+    
+}// End of the class
