@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -21,6 +21,7 @@
 		AB4571E3259B9E760079E9D6 /* signUpVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB4571E2259B9E760079E9D6 /* signUpVC.swift */; };
 		AB4571E5259B9EA10079E9D6 /* homeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB4571E4259B9EA10079E9D6 /* homeVC.swift */; };
 		AB4A7FC325A37E1900EAFA86 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = AB4A7FC225A37E1900EAFA86 /* GoogleService-Info.plist */; };
+		AB591AEF25A87FA8008374DE /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB591AEE25A87FA8008374DE /* Utilities.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -63,6 +64,7 @@
 		AB4571E2259B9E760079E9D6 /* signUpVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = signUpVC.swift; sourceTree = "<group>"; };
 		AB4571E4259B9EA10079E9D6 /* homeVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = homeVC.swift; sourceTree = "<group>"; };
 		AB4A7FC225A37E1900EAFA86 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		AB591AEE25A87FA8008374DE /* Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
 		C67B91F904B0793013102487 /* Pods-loginWithFirebase-loginWithFirebaseUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-loginWithFirebase-loginWithFirebaseUITests.release.xcconfig"; path = "Target Support Files/Pods-loginWithFirebase-loginWithFirebaseUITests/Pods-loginWithFirebase-loginWithFirebaseUITests.release.xcconfig"; sourceTree = "<group>"; };
 		DFF6F9E73C6967F144F4CC10 /* Pods_loginWithFirebase.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_loginWithFirebase.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F251EF1822A4B35D83966BE3 /* Pods-loginWithFirebase.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-loginWithFirebase.debug.xcconfig"; path = "Target Support Files/Pods-loginWithFirebase/Pods-loginWithFirebase.debug.xcconfig"; sourceTree = "<group>"; };
@@ -117,7 +119,6 @@
 				332CB744B7E244BABB1A8F5A /* Pods-loginWithFirebaseTests.debug.xcconfig */,
 				253A1E47A07791D8EFBACF58 /* Pods-loginWithFirebaseTests.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -190,6 +191,7 @@
 		AB4571E1259B9B6B0079E9D6 /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				AB591AEE25A87FA8008374DE /* Utilities.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -436,6 +438,7 @@
 			files = (
 				AB4571B4259B86F10079E9D6 /* AuthenticationVC.swift in Sources */,
 				AB4571E3259B9E760079E9D6 /* signUpVC.swift in Sources */,
+				AB591AEF25A87FA8008374DE /* Utilities.swift in Sources */,
 				AB4571E5259B9EA10079E9D6 /* homeVC.swift in Sources */,
 				AB4571B0259B86F10079E9D6 /* AppDelegate.swift in Sources */,
 				AB4571B2259B86F10079E9D6 /* SceneDelegate.swift in Sources */,

@@ -26,8 +26,8 @@ class signUpVC: UIViewController {
         super.viewDidLoad()
         
         errorLabel.alpha = 0
+        navigationItem.title = "Authentication"
 
-        
     }
     @IBAction func signinButton(_ sender: Any) {
         
@@ -50,7 +50,7 @@ class signUpVC: UIViewController {
         }else {
             if pass != repeatPass {
                 
-                //Show error, password doesnt match
+                //Show error, password doesn't match
                 errorLabel.alpha = 1
                 errorLabel.text = "Please, check that password matches"
                 return
@@ -58,39 +58,48 @@ class signUpVC: UIViewController {
             }
             else {
                 
-                //Create User
-                Auth.auth().createUser(withEmail: email, password: pass) { (result, AUTHerror) in
-                    if AUTHerror != nil {
-                        //Show error while create user
-                        self.errorLabel.alpha = 1
-                        let errorDescription = AUTHerror?.localizedDescription
-                        self.errorLabel.text = "\(errorDescription!)"
-                        return
-                        
-                    }
-                    else {
-                        
-                        //Save user's data
-                        let db = Firestore.firestore()
-                        db.collection("Users").addDocument(data: ["uid" : result!.user.uid, "Name" : name, "Lastname" : lastname, "Email" : email, "Birthday" : birthday]) { (DBerror) in
-                            if DBerror != nil {
-                                //Show error while create user
-                                self.errorLabel.alpha = 1
-                                self.errorLabel.text = "Warning: user info wasn't save propertly in the database"
-                                return
-                                
-                            }
-                            else {
-                                
-                                //Transition to Home
-                                self.performSegue(withIdentifier: "toHomeFromSignUp", sender: self)
-                                
+                if !Utilities.passwordValidator(pass){
+                    
+                    //Show error, password doesn't match
+                    errorLabel.alpha = 1
+                    errorLabel.text = "Password must have at least 8 characters, one capital letter and one number"
+                    return
+                    
+                }
+                else {
+                    //Create User
+                    Auth.auth().createUser(withEmail: email, password: pass) { (result, AUTHerror) in
+                        if AUTHerror != nil {
+                            //Show error while create user
+                            self.errorLabel.alpha = 1
+                            let errorDescription = AUTHerror?.localizedDescription
+                            self.errorLabel.text = "\(errorDescription!)"
+                            return
+                            
+                        }
+                        else {
+                            
+                            //Save user's data
+                            let db = Firestore.firestore()
+                            db.collection("Users").addDocument(data: ["uid" : result!.user.uid, "Name" : name, "Lastname" : lastname, "Email" : email, "Birthday" : birthday]) { (DBerror) in
+                                if DBerror != nil {
+                                    //Show error while create user
+                                    self.errorLabel.alpha = 1
+                                    self.errorLabel.text = "Warning: user's info wasn't save propertly in the database"
+                                    return
+                                    
+                                }
+                                else {
+                                    
+                                    //Transition to Home
+                                    self.performSegue(withIdentifier: "toHomeFromSignUp", sender: self)
+                                    
+                                }
                             }
                         }
                     }
                 }
             }
         }
-        
     }
 }
