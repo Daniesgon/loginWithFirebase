@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Firebase
 
 class AuthenticationVC: UIViewController {
     
@@ -20,21 +21,50 @@ class AuthenticationVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        navigationItem.hidesBackButton = true
         errorLabel.alpha = 0
         
     }
     
     @IBAction func loginButton(_ sender: Any) {
         
-        performSegue(withIdentifier: "toHomeFromAuth", sender: self)
+        //Clean values
+        let email = emailTextField.text!.trimmingCharacters(in: .whitespacesAndNewlines)
+        let pass = passwordTextField.text!.trimmingCharacters(in: .whitespacesAndNewlines)
         
-    }
+        //Check if all the fields are filled in
+        if email.isEmpty || pass.isEmpty {
+            
+            //Show error, all the files must be filled in
+            errorLabel.alpha = 1
+            errorLabel.text = "Please, fill in all the fields"
+            return
+            
+        }else {
+            
+            Auth.auth().signIn(withEmail: email, password: pass) { authResult, loginError in
+                if loginError != nil {
+                    
+                    //Show error, all the files must be filled in
+                    self.errorLabel.alpha = 1
+                    let errorDescription = loginError?.localizedDescription
+                    self.errorLabel.text = "\(errorDescription!)"
+                    return
+                    
+                }else {
+                    
+                    self.performSegue(withIdentifier: "toHomeFromAuth", sender: self)
+                    
+                }
+            }
+        }
+    } //End of loginButton method
     
     @IBAction func signupButton(_ sender: Any) {
         
         performSegue(withIdentifier: "toSignUpFromAuth", sender: self)
         
-    }
+    }//End of signupButton method
     
 
 }
