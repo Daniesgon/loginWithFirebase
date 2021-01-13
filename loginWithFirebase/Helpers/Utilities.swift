@@ -37,4 +37,5 @@ class Utilities {
         return email.evaluate(with: email)
         
     }
-}
+    
+}//End of class

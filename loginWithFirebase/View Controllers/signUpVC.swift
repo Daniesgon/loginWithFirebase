@@ -21,9 +21,12 @@ class signUpVC: UIViewController {
     @IBOutlet weak var signinButton: UIButton!
     @IBOutlet weak var errorLabel: UILabel!
     
+    let datePicker = UIDatePicker()
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        createDatePicker()
         
         errorLabel.alpha = 0
         navigationItem.title = "Authentication"
@@ -104,5 +107,35 @@ class signUpVC: UIViewController {
         }
         
     } //End of the action signUpButton
+    
+    func createDatePicker() {
+        
+        //create toolbar
+        let toolbar = UIToolbar()
+        toolbar.sizeToFit()
+        
+        let barButton = UIBarButtonItem(barButtonSystemItem: .done, target: nil, action: #selector(donePressed))
+        toolbar.setItems([barButton], animated: true)
+        
+        birthdayTextField.inputAccessoryView = toolbar
+        birthdayTextField.inputView = datePicker
+        
+        //datepicker MODE
+        datePicker.datePickerMode = .date
+        datePicker.locale = Locale.current
+        
+    }//End of function createDatePicker
+    
+    @objc func donePressed () {
+        
+        //format text to see it correctly
+        let formatter = DateFormatter()
+        formatter.dateStyle = .long
+        formatter.timeStyle = .none
+        
+        birthdayTextField.text = formatter.string(from: datePicker.date)
+        self.view.endEditing(true)
+        
+    }
     
 }// End of the class
